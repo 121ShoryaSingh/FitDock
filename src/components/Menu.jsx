@@ -1,0 +1,53 @@
+import React from 'react'
+import Link from 'next/link';
+import { BsChevronDown } from "react-icons/bs";
+const data = [
+    { id: 1, name: "Home", url: "/" },
+    { id: 2, name: "Categories", subMenu: true },
+    { id: 3, name: "Contact", url: "/contact" },
+];
+
+const subMenuData = [
+    { id: 1, name: "Equipments", doc_count: 11 },
+    { id: 2, name: "Suppliment", doc_count: 8 },
+    { id: 3, name: "Clothes", doc_count: 64 },
+    { id: 4, name: "Shakers", doc_count: 107 },
+];
+const Menu = ({showCatMenu, setShowCatMenu}) => {
+  return (
+    <ul className='hidden md:flex items-center gap-8 font-medium text-black'>{data.map((item) => {
+        return (
+            <React.Fragment key={item.id}>
+                {!!item?.subMenu ? (
+                <li className="cursor-pointer flex items-center gap-2 relative"
+                onMouseEnter={()=> setShowCatMenu(true)} 
+                onMouseLeave={()=> setShowCatMenu(false)} >
+                {item.name}
+                <BsChevronDown size={14}/>
+                {showCatMenu && (
+                    <ul className="bg-white absolute top-6 left-0 min-w-[250px] px-1 py-1 text-black shadow-lg">
+                        {subMenuData.map((submenu) => {
+                            return (
+                                <Link href="/store/category" key={submenu.id} onClick={()=> setShowCatMenu(false)}>
+                                    <li className="h-12 flex items-center px-3 hover:bg-black/[0.03] rounded-md">
+                                        {submenu.name}
+                                        <span className="opacity-50 text-sm">78</span>
+                                    </li>
+                                </Link>
+                            )
+                        })}
+                    </ul>
+                )}
+                </li>
+                ) : (
+                    <li>
+                        <Link href={item?.url} className='cursor-pointer'>{item.name}</Link>
+                    </li>
+                )}
+            </React.Fragment>
+        )
+    })}</ul>
+  )
+}
+
+export default Menu
